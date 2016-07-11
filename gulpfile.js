@@ -103,6 +103,7 @@ gulp.task('build:scripts',['clean:js'], function() {
   return gulp.src(['./babel/**/*.babel.js'])
     .pipe($.babel())
     .pipe($.concat('scripts.js'))
+    .pipe($.license('MIT', {tiny: true}))
     .pipe($.if(argv.production, $.uglify()))
     .pipe($.if(argv.production, $.rename({extname: '.min.js'})))
     .pipe(gulp.dest('./_site/javascripts/'));
@@ -112,6 +113,7 @@ gulp.task('build:styles',['clean:css'], function() {
   return gulp.src(['./sass/**/*.scss','!./sass/_**/*.scss','!./sass/_settings.scss'])
     .pipe($.sass())
     .pipe($.concat('styles.css'))
+    .pipe($.license('MIT', {tiny: true}))
     .pipe($.if(argv.production, $.csso()))
     .pipe($.if(argv.production, $.rename({extname: '.min.css'})))
     .pipe(gulp.dest('./_site/stylesheets/'));

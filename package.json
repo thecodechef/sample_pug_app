@@ -1,6 +1,6 @@
 {
   "name": "sample_pug_app",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "A Simple Pug App Built With Bootstrap & Gulp",
   "main": "gulpfile.js",
   "keywords": [
@@ -35,6 +35,7 @@
     "gulp-git": "^1.8.0",
     "gulp-if": "^2.0.1",
     "gulp-include": "^2.3.0",
+    "gulp-license": "^1.1.0",
     "gulp-load-plugins": "^1.2.4",
     "gulp-merge-json": "^0.6.0",
     "gulp-notify": "^2.2.0",
