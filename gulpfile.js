@@ -3,7 +3,10 @@ var gulp                       = require('gulp'),
     colors                     = require('colors'),
     sleep                      = require('sleep'),
     mergeJson                  = require('gulp-merge-json'),
+    stripDebug                 = require('gulp-strip-debug'),
+    stripComments              = require('gulp-strip-comments'),
     runSequence                = require('run-sequence'),
+    browserSync                = require('browser-sync'),
     conventionalChangelog      = require('gulp-conventional-changelog'),
     conventionalGithubReleaser = require('conventional-github-releaser'),
     argv                       = require('yargs').argv,
@@ -11,6 +14,25 @@ var gulp                       = require('gulp'),
     fs                         = require('fs'),
     _                          = require('lodash'),
     $                          = require('gulp-load-plugins')();
+
+
+var generate = {
+  TodoOpts: {
+    fileName: "TODO.md",
+    formats: [
+      ['//','\n'],
+      ['//-','\n'],
+      ['/*','*/']
+    ],
+    templates: {
+      header: "# TODO\n",
+      label: "\n## <%= label %>\n",
+      note: "* <%= note %> - <%= fileName %>:<%= lineNumber %>\n",
+      empty: "\nToday is your Day off Go have fun!!\n",
+      footer: "\nGenerated: **<%= dateCreated %>**"
+    }
+  }
+}
 
 
 gulp.task('bump', function(cb) {
@@ -101,10 +123,12 @@ gulp.task('cson', function(file) {
 gulp.task('build:data',['cson'], function() {
   return gulp.src('./_data/*.json')
     .pipe(mergeJson('settings.json'))
+    .pipe($.size())
     .pipe(gulp.dest('./_data/'))
     .on('end', function(){
       return del(['./_data/*.json','!./_data/settings.json']);
-    });
+    })
+    .pipe($.size());
 });
 
 gulp.task('build:scripts',['clean:js'], function() {
@@ -114,7 +138,9 @@ gulp.task('build:scripts',['clean:js'], function() {
     .pipe($.if(argv.production, $.uglify()))
     .pipe($.if(argv.production, $.rename({extname: '.min.js'})))
     .pipe($.if(argv.production, $.license('MIT', {organization: "Simple Pug App",tiny: true}),$.license('MIT', {organization: "Simple Pug App",tiny: false})))
-    .pipe(gulp.dest('./_site/javascripts/'));
+    .pipe($.size())
+    .pipe(gulp.dest('./_site/javascripts/'))
+    .pipe(browserSync.reload({stream: true}));
 });
 
 gulp.task('build:styles',['clean:css'], function() {
@@ -124,7 +150,9 @@ gulp.task('build:styles',['clean:css'], function() {
     .pipe($.if(argv.production, $.csso()))
     .pipe($.if(argv.production, $.rename({extname: '.min.css'})))
     .pipe($.if(argv.production, $.license('MIT', {organization: "Simple Pug App",tiny: true}), $.license('MIT', {organization: "Simple Pug App",tiny: false})))
-    .pipe(gulp.dest('./_site/stylesheets/'));
+    .pipe($.size())
+    .pipe(gulp.dest('./_site/stylesheets/'))
+    .pipe(browserSync.reload({stream: true}));
 });
 
 gulp.task('build:html',['clean:html'], function() {
@@ -137,7 +165,11 @@ gulp.task('build:html',['clean:html'], function() {
     .pipe($.if(argv.production, $.replace("./stylesheets/styles.css","./stylesheets/styles.min.css")))
     .pipe($.if(argv.production, $.replace("./javascripts/scripts.js","./javascripts/scripts.min.js")))
     .pipe($.if(argv.production, $.replace("../components/tether/dist/js/tether.js","../components/tether/dist/js/tether.min.js")))
-    .pipe(gulp.dest('./_site'));
+    .pipe($.size())
+    .pipe(gulp.dest('./_site'))
+    .pipe($.notes(generate.TodoOpts))
+    .pipe(gulp.dest('./'))
+    .pipe(browserSync.reload({stream: true}));
 });
 
 gulp.task('build', function(cb) {
@@ -156,6 +188,14 @@ gulp.task('build', function(cb) {
       cb(error);
     }
   );
+});
+
+gulp.task('browserSync',['build'], function() {
+  browserSync({server: './_site'});
+  gulp.watch('./sass/**/*.{sass,scss}',['build:styles']);
+  gulp.watch('./babel/**/*.babel.js', ['build:scripts']);
+  gulp.watch('./_data/cson/*.cson', ['build:data']);
+  gulp.watch('./templates/**/*.pug', ['build:html']);
 });
 
 gulp.task('release', function(cb) {

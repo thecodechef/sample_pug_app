@@ -4,10 +4,16 @@ block title
   +full-title(site.title,"Index")
 
 append main_content
-  .col-xl-4.col-xl-offset-4
-
+  .col-xl-9
+    // FIXME: Add Content to main_content
+    include ./partials/main_content.pug
+append sub_content
+  .col-xl-3
+    // TODO: Add More List Items to list-group
+    include ./partials/list-group.pug
 append testamonials
   .container-fluid
     .row
       .col-lg-12
+        // Jeremy: Add actual images to Carousel
         +carousel("testamonials",index.testamonials)
