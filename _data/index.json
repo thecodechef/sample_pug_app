@@ -1,0 +1,39 @@
+{
+  "testamonials": [
+    {
+      "image": "http://placehold.it/1920x600",
+      "caption": {
+        "title": "Slide 1",
+        "description": "This is a Caption"
+      }
+    },
+    {
+      "image": "http://placehold.it/1920x600",
+      "caption": {
+        "title": "Slide 2",
+        "description": "This is a Caption"
+      }
+    },
+    {
+      "image": "http://placehold.it/1920x600",
+      "caption": {
+        "title": "Slide 3",
+        "description": "This is a Caption"
+      }
+    },
+    {
+      "image": "http://placehold.it/1920x600",
+      "caption": {
+        "title": "Slide 4",
+        "description": "This is a Caption"
+      }
+    },
+    {
+      "image": "http://placehold.it/1920x600",
+      "caption": {
+        "title": "Slide 5",
+        "description": "This is a Caption"
+      }
+    }
+  ]
+}
