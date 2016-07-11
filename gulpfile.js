@@ -9,6 +9,7 @@ var gulp                       = require('gulp'),
     browserSync                = require('browser-sync'),
     conventionalChangelog      = require('gulp-conventional-changelog'),
     conventionalGithubReleaser = require('conventional-github-releaser'),
+    merge                      = require('merge-stream'),
     argv                       = require('yargs').argv,
     del                        = require('del'),
     fs                         = require('fs'),
@@ -16,23 +17,21 @@ var gulp                       = require('gulp'),
     $                          = require('gulp-load-plugins')();
 
 
-var generate = {
-  TodoOpts: {
-    fileName: "TODO.md",
-    formats: [
-      ['//','\n'],
-      ['//-','\n'],
-      ['/*','*/']
-    ],
-    templates: {
-      header: "# TODO\n",
-      label: "\n## <%= label %>\n",
-      note: "* <%= note %> - <%= fileName %>:<%= lineNumber %>\n",
-      empty: "\nToday is your Day off Go have fun!!\n",
-      footer: "\nGenerated: **<%= dateCreated %>**"
-    }
+var TodoOpts = {
+  fileName: "TODO.md",
+  formats: [
+    ['//','\n'],
+    ['<!--','-->'],
+    ['/*','*/']
+  ],
+  templates: {
+    header: "# TODO\n",
+    label: "\n## <%= label %>\n",
+    note: "* <%= note %> - <%= fileName %>:<%= lineNumber %>\n",
+    empty: "\nToday is your Day off Go have fun!!\n",
+    footer: "\nGenerated: **<%= dateCreated %>**"
   }
-}
+};
 
 
 gulp.task('bump', function(cb) {
@@ -77,6 +76,19 @@ gulp.task('changelog', function () {
       preset: 'angular'
     }))
     .pipe(gulp.dest('./'));
+});
+
+gulp.task('todo', function() {
+  var cssTodos = gulp.src(['./_site/stylesheets/styles.{css,min.css}'])
+                   .pipe($.notes(TodoOpts))
+                   .pipe(gulp.dest('./'));
+  var jsTodos  = gulp.src(['./_site/javascripts/scripts.{js,min.js}'])
+                   .pipe($.notes(TodoOpts))
+                   .pipe(gulp.dest('./'));
+  var pugTodos = gulp.src(['./_site/**/*.html'])
+                   .pipe($.notes(TodoOpts))
+                   .pipe(gulp.dest('./'));
+  return merge(cssTodos,jsTodos,pugTodos);
 });
 
 gulp.task('generate:license', function() {
@@ -167,8 +179,6 @@ gulp.task('build:html',['clean:html'], function() {
     .pipe($.if(argv.production, $.replace("../components/tether/dist/js/tether.js","../components/tether/dist/js/tether.min.js")))
     .pipe($.size())
     .pipe(gulp.dest('./_site'))
-    .pipe($.notes(generate.TodoOpts))
-    .pipe(gulp.dest('./'))
     .pipe(browserSync.reload({stream: true}));
 });
 
@@ -179,6 +189,7 @@ gulp.task('build', function(cb) {
     'build:styles',
     'build:data',
     'build:html',
+    'todo',
     function (error) {
       if (error) {
         console.log('[build]'.bold.magenta + ' There was an issue building:\n'.bold.red + error.message);
