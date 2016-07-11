@@ -1,0 +1,12 @@
+mixin jumbotron(header)
+  .jumbotron
+    h1(class="display-" + header.size)= header.title
+    if block
+      block
+
+mixin jumbotron-fluid(header)
+  .jumbotron.jumbotron-fluid
+    .container-fluid
+      h1(class="display-"+ header.size)= header.title
+      if block
+        block

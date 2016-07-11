@@ -1,0 +1,26 @@
+{
+  "name": "sample_pug_app",
+  "version": "1.0.3",
+  "authors": [
+    "Jeremy Bolding <cyberchefjay@gmail.com>"
+  ],
+  "description": "A Simple Pug App Built with Bootstrap & Gulp",
+  "main": "",
+  "moduleType": [],
+  "keywords": [
+    "Pug",
+    "Bootstrap",
+    "Gulp"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "components",
+    "test",
+    "tests"
+  ]
+}

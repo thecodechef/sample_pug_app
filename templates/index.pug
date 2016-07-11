@@ -1,0 +1,13 @@
+extends ./layouts/app.pug
+
+block title
+  +full-title(site.title,"Index")
+
+append main_content
+  .col-xl-4.col-xl-offset-4
+
+append testamonials
+  .container-fluid
+    .row
+      .col-lg-12
+        +carousel("testamonials",testamonials)

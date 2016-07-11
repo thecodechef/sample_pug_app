@@ -1,0 +1,43 @@
+mixin navbar(id,type,style,brand)
+  if style
+    nav.navbar.navbar-dark(id=id, class=["navbar-"+ type,"bg-" + style], role="navigation")
+      .container
+        a.navbar-brand(href="/")= brand
+        block
+  else
+    nav.navbar.navbar-light(id=id, class=["navbar-"+ type,"bg-faded"], role="navigation")
+      .container
+        a.navbar-brand(href="/")= brand
+        block
+
+mixin navbar-fluid(id,type,style,brand)
+  if style
+    nav.navbar.navbar-dark(id=id, class=["navbar-"+ type, "bg-" + style], role="navigation")
+      .container-fluid
+        a.navbar-brand(href="/")= brand
+        block
+  else
+    nav.navbar.navbar-light(id=id, class=["navbar-"+ type, "bg-faded"], role="navigation")
+      .container-fluid
+        a.navbar-brand(href="/")= brand
+        block
+
+mixin nav-link(url,caption,active)
+  if active
+    a.nav-link(href=url) #[span(class="sr-only") (current)]
+      = caption
+  else
+    a.nav-link(href=url)= caption
+
+mixin nav-item(url,caption,active)
+  if active
+    li.nav-item.active()
+      +nav-link(url,caption,active)
+  else
+    li.nav-item()
+      +nav-link(url,caption,active)
+
+mixin nav-menu(id,position,items)
+  ul.nav.navbar-nav(id=id,class="pull-xs-" + position, role="navigation")
+    each item,index in items
+      +nav-item(item.url,item.caption,item.active)

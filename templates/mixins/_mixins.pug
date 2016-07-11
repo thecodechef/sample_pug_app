@@ -1,0 +1,15 @@
+include ./buttons.pug
+include ./carousel.pug
+include ./forms.pug
+include ./jumbotron.pug
+include ./navbar.pug
+include ./progress-bars.pug
+include ./tables.pug
+
+mixin full-title(siteTitle,pageTitle)
+  if pageTitle
+    - var title = pageTitle + " | " + siteTitle
+    title= title
+  else
+    - var title = siteTitle
+    title= title

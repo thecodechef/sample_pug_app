@@ -1,0 +1,19 @@
+mixin progress-bar(value,max,type)
+  - var type = type || ""
+  - var max = max || "100"
+  if type
+    if max === 10
+      progress.progress(class="progress-" + type, value=value, max=max role="progressbar")&attributes(attributes)= value + "0%"
+    else
+      progress.progress(class="progress-" + type, value=value, max=max role="progressbar")&attributes(attributes)= value + "%"
+  else
+    if max === 10
+      progress.progress(value=value, max=max role="progressbar")&attributes(attributes)= value + "0%"
+    else
+      progress.progress(value=value, max=max role="progressbar")&attributes(attributes)= value + "%"
+
+mixin progress-bar-striped(value,max,type)
+  +progress-bar(value,max,type)(class="progress-striped")
+
+mixin progress-bar-animated(value,max,type)
+  +progress-bar(value,max,type)(class="progress-striped progress-animated")

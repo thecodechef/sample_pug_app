@@ -1,0 +1,75 @@
+mixin a-btn(url,style,value)
+  - var type = (style === "undefined") ? 'secondary' : style
+  a.btn(class="btn-" + type,href=url,role="button")&attributes(attributes)= value
+
+mixin a-btn-primary(url,value)
+  +a-btn(url,"primary",value)
+
+mixin a-btn-success(url,value)
+  +a-btn(url,"success",value)
+
+mixin a-btn-info(url,value)
+  +a-btn(url,"info",value)
+
+mixin a-btn-warning(url,value)
+  +a-btn(url,"warning",value)
+
+mixin a-btn-danger(url,value)
+  +a-btn(url,"danger",value)
+
+mixin btn(caption,style)
+  - var type = (typeof style === 'undefined') ? "default" : style
+  button.btn(class="btn-" + type,type="button")&attributes(attributes)= caption
+
+mixin btn-primary(caption)
+  +btn(caption,"primary")
+  
+mixin btn-info(caption)
+  +btn(caption,"info")
+  
+mixin btn-warning(caption)
+  +btn(caption,"warning")
+  
+mixin btn-danger(caption)
+  +btn(caption,"danger")
+  
+mixin btn-success(caption)
+  +btn(caption,"success")
+
+mixin input-btn(caption,style)
+  - var type = (typeof style === 'undefined') ? "secondary" : style
+  input.btn(class="btn-" + type,type="button",value=caption)&attributes(attributes)
+
+mixin input-btn-primary(caption)
+  +input-btn(caption,"primary")
+  
+mixin input-btn-info(caption)
+  +input-btn(caption,"info")
+  
+mixin input-btn-warning(caption)
+  +input-btn(caption,"warning")
+  
+mixin input-btn-danger(caption)
+  +input-btn(caption,"danger")
+  
+mixin input-btn-success(caption)
+  +input-btn(caption,"success")
+  
+mixin submit-btn(caption,style)
+  - var type = (typeof style === 'undefined') ? "secondary" : style
+  input.btn(class="btn-" + type,type="submit",value=caption)&attributes(attributes)
+
+mixin submit-btn-primary(caption)
+  +submit-btn(caption,"primary")
+  
+mixin submit-btn-info(caption)
+  +submit-btn(caption,"info")
+  
+mixin submit-btn-warning(caption)
+  +submit-btn(caption,"warning")
+  
+mixin submit-btn-danger(caption)
+  +submit-btn(caption,"danger")
+  
+mixin submit-btn-success(caption)
+  +submit-btn(caption,"success")

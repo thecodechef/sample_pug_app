@@ -1,0 +1,52 @@
+mixin table-inverse-top(header,data,type)
+  - var type = type || ""
+  table.table(class=type)&attributes(attributes)
+    thead.thead-inverse
+      tr
+        each head, i in header
+          th= head
+    tbody
+      each row,j in data
+        tr
+          each col,k in row
+            td= col
+
+mixin table-default-top(header,data,type)
+  - var type = type || ""
+  table.table(class=type)&attributes(attributes)
+    thead.thead-default
+      tr
+        each head, i in header
+          th= head
+    tbody
+      each row,j in data
+        tr
+          each col,k in row
+            td= col
+
+mixin table(header,data,type)
+  table.table(class=type)&attributes(attributes)
+    thead
+      tr
+        each head, i in header
+          th= head
+    tbody
+      each row,j in data
+        tr
+          each col,k in row
+            td= col
+
+mixin table-striped(header,data)
+  +table(header,data,"table-striped")
+
+mixin table-bordered(header,data)
+  +table(header,data,"table-bordered")
+
+mixin table-hover(header,data)
+  +table(header,data,"table-hover")
+
+mixin table-sm(header,data)
+  +table(header,data,"table-sm")
+
+mixin table-inverse(header,data)
+  +table(header,data,"table-inverse")

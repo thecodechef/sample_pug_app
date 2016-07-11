@@ -1,0 +1,30 @@
+mixin form-input(id,type,label)
+  fieldset.form-group()
+    label(for=id)= label
+    input.form-control(type=type, id=id, placeholder=label)
+    if block
+      block
+
+mixin form-select(id,label,multiple,items)
+  fieldset.form-group()
+    label(for=id)= label
+    if multiple
+      select.form-control(multiple id=id)
+        each item,i in items
+          option(value=item)= item
+    else
+      select.form-control(id=id)
+        each item,i in items
+          option(value=item)= item
+
+mixin form-checkbox(label)
+  .checkbox
+    label
+      input(type="checkbox")
+      = " " + label
+
+mixin form-radio(label)
+  .radio
+    label
+      input(type="radio")
+      = " " + label

@@ -1,0 +1,36 @@
+include ../mixins/_mixins.pug
+doctype html
+html(lang="en")
+head
+  meta(charset=site.meta.charset)
+  meta(name="keywords" content=site.meta.keywords)
+  meta(name="description" content!=site.meta.description)
+  meta(http-equiv="x-ua-compatible" content="ie=edge")
+  meta(name=site.meta.viewport.name content=site.meta.viewport.content)
+  block title
+    +full-title(site.title)
+  block styles
+    link(rel="stylesheet" href=site.css.bootstrap)
+    link(rel="stylesheet" href=site.css.fontAwesome)
+    link(rel="stylesheet" href=site.css.main)
+body
+  block navigation
+    include ../partials/navbar.pug
+  block content
+    +jumbotron({size: 1,title: site.title + ".com"})
+      +a-btn-primary("#","Learn More...")
+    .container-fluid
+      .row
+        .col-xl-12
+          .row
+            block main_content
+            block sub_content
+  block testamonials
+  block footer
+    footer#footer.bg-inverse.p-a-2.text-xs-center
+      p.text-muted Copyright &copy; 2016 Jeremy Bolding All Rights Reserved.
+  block scripts
+    script(src=site.js.jquery type="text/javascript")
+    script(src=site.js.tether type="text/javascript")
+    script(src=site.js.bootstrap type="text/javascript")
+    script(src=site.js.main type="text/javascript")

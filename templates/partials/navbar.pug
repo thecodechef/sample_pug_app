@@ -1,0 +1,41 @@
+div.collapse#exCollapsingNavbar1
+  div.bg-warning.p-a-1
+    .container-fluid
+      .row
+        .col-xl-12
+          .row
+            .col-md-12.col-xl-4.hidden-sm-down
+              h4 LMG Tech Reviews
+              ul.list-unstyled
+                li: a.text-muted(href="#") Todays Featured Review
+                li: a.text-muted(href="#") Reviews This Week
+                li: a.text-muted(href="#") Reviews This Month
+                li: a.text-muted(href="#") Reviews This Year
+                li: a.text-muted(href="#") Upcoming Reviews
+            .col-md-12.col-xl-4.hidden-sm-down
+              h4 Tech Tips
+              ul.list-unstyled
+                li: a.text-muted(href="#") 60s Explainations
+                li: a.text-muted(href="#") LMG Quicky Tips
+                li: a.text-muted(href="#") Laptop Tips
+                li: a.text-muted(href="#") Desktop Tips
+                li: a.text-muted(href="#") Building a Computer Tips
+            .col-md-12.col-xl-4
+              h4 Navigation
+              ul.list-unstyled
+                li: a.text-muted.hidden-md-up(href="#") LMG Reviews
+                li: a.text-muted.hidden-md-up(href="#") Tech Tips
+                li: a.text-muted(href="#") Home
+                li: a.text-muted(href="#") About
+                li: a.text-muted(href="#") Contact
+                li: a.text-muted(href="#") Store
+                li: a.text-muted(href="#") Forums
++navbar-fluid("myNavbar","full","inverse",site.title)
+  +nav-menu("navMenuLeft","left",[{url: "/",caption: "Home",active: true},
+    {url: "/",caption: "About"},
+    {url: "/",caption: "Tutorials"},
+    {url: "/",caption: "Gallery"},
+    {url: "/",caption: "Downloads"}
+  ])
+  button.navbar-toggler.pull-xs-right(type="button" data-toggle="collapse" data-target="#exCollapsingNavbar1")
+    | &#9776;

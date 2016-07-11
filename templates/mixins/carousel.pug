@@ -1,0 +1,39 @@
+mixin carousel-caption(title,description)
+  .carousel-caption.hidden-md-down
+    h3()= title
+    p()= description
+
+mixin carousel-control(direction,id)
+  case direction
+    when "left"
+      a.carousel-control(class=direction, href="#" + id, role="button", data-slide="prev")
+        span.m-y-3.p-y-3.fa.fa-fw.fa-5x.fa-chevron-left
+        span.sr-only Previous
+    when "right"
+      a.carousel-control(class=direction, href="#" + id, role="button", data-slide="next")
+        span.m-y-3.p-y-3.fa.fa-fw.fa-5x.fa-chevron-right
+        span.sr-only Next
+
+mixin carousel(id,items)
+  .carousel.slide.hidden-sm-down(id=id data-ride="carousel")
+    ol.carousel-indicators
+      each item,index in items
+        if index === 0
+          li.active(data-target="#"+ id, data-slide-to=index)
+        else
+          li(data-target="#"+ id, data-slide-to=index)
+    .carousel-inner(role="listbox")
+      each item,index in items
+        if index === 0
+          .carousel-item.active
+            img(src=item.image)
+            if item.caption
+              +carousel-caption(item.caption.title,item.caption.description)
+        else
+          .carousel-item
+            img(src=item.image)
+            if item.caption
+              +carousel-caption(item.caption.title,item.caption.description)
+    
+    +carousel-control("left",id)
+    +carousel-control("right",id)
