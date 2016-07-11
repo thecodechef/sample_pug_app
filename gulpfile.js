@@ -121,9 +121,9 @@ gulp.task('build:styles',['clean:css'], function() {
   return gulp.src(['./sass/**/*.scss','!./sass/_**/*.scss','!./sass/_settings.scss'])
     .pipe($.sass())
     .pipe($.concat('styles.css'))
-    .pipe($.license('MIT', {organization: "Simple Pug App",tiny: false}))
     .pipe($.if(argv.production, $.csso()))
     .pipe($.if(argv.production, $.rename({extname: '.min.css'})))
+    .pipe($.if(argv.production, $.license('MIT', {organization: "Simple Pug App",tiny: true}), $.license('MIT', {organization: "Simple Pug App",tiny: false})))
     .pipe(gulp.dest('./_site/stylesheets/'));
 });
 
