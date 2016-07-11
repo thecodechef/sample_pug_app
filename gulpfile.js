@@ -73,6 +73,10 @@ gulp.task('clean:todo', function(cb) {
   return del(['./TODO.md']);
 });
 
+gulp.task('clean:license', function(cb) {
+  return del(['./LICENSE']);
+});
+
 gulp.task('changelog', function () {
   return gulp.src('CHANGELOG.md')
     .pipe(conventionalChangelog({
@@ -94,7 +98,7 @@ gulp.task('todo',['clean:todo'], function() {
   return merge(cssTodos,jsTodos,pugTodos);
 });
 
-gulp.task('license', function() {
+gulp.task('license',['clean:license'], function() {
   return gulp.src('LICENSE')
     .pipe($.license('MIT', {organization: "Simple Pug App",tiny: false}))
     .pipe(gulp.dest('./'))
@@ -132,9 +136,7 @@ gulp.task('cson', function(file) {
     .pipe($.cson())
     .pipe(gulp.dest('./_data'));
 });
-/*
 
-*/
 gulp.task('build:data',['cson'], function() {
   return gulp.src('./_data/*.json')
     .pipe(mergeJson('settings.json'))
@@ -203,7 +205,11 @@ gulp.task('build', function(cb) {
 });
 
 gulp.task('browserSync',['build'], function() {
-  browserSync({server: './_site'});
+  browserSync({
+    server: './_site' || $.argv.root,
+    host: '0.0.0.0' || $.argv.host,
+    port: '3200' || $.argv.port,
+  });
   gulp.watch('./sass/**/*.{sass,scss}',['build:styles']);
   gulp.watch('./babel/**/*.babel.js', ['build:scripts']);
   gulp.watch('./_data/cson/*.cson', ['build:data']);
