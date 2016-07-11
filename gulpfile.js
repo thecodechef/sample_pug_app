@@ -128,7 +128,7 @@ gulp.task('build:styles',['clean:css'], function() {
 gulp.task('build:html',['clean:html'], function() {
   return gulp.src('./templates/index.pug')
     .pipe($.data(function(file) {
-      var specific = require('./_data/' + path.basename(file.path));
+      var specific = require('./_data/' + path.basename(file.path) + '.json');
       return _.merge(settings,specific);
     }))
     .pipe($.pug({pretty: true}))
