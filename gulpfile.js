@@ -49,22 +49,6 @@ gulp.task('clean:html', function(cb) {
   return del(['./_site/*.html']);
 });
 
-gulp.task('clean', function(cb) {
-    runSequence(
-      'clean:js',
-      'clean:css',
-      'clean:html',
-      function (error) {
-        if (error) {
-          console.log('[clean]'.bold.magenta + ' There was an issue cleaning the Trash:\n'.bold.red + error.message);
-        } else {
-          console.log('[clean]'.bold.magenta + ' Finished successfully'.bold.green);
-        }
-        cb(error);
-      }
-    );
-});
-
 gulp.task('changelog', function () {
   return gulp.src('CHANGELOG.md')
     .pipe(conventionalChangelog({
@@ -115,7 +99,7 @@ gulp.task('build:data',['cson'], function() {
     });
 });
 
-gulp.task('build:scripts', function() {
+gulp.task('build:scripts',['clean:js'], function() {
   return gulp.src(['./babel/**/*.babel.js'])
     .pipe($.babel())
     .pipe($.concat('scripts.js'))
@@ -142,7 +126,7 @@ gulp.task('build:html',['clean:html'], function() {
     .pipe(gulp.dest('./_site'));
 });
 
-gulp.task('build',['clean'], function(cb) {
+gulp.task('build', function(cb) {
   runSequence(
     'build:scripts',
     'build:styles',

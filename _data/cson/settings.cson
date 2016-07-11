@@ -9,16 +9,25 @@
       """
       author: "Jeremy Bolding"
       email: "cyberchefjay@gmail.com"
-      viewport:
-        name: "viewport"
-        content: "width=device-width, initial-scale=1, shrink-to-fit=no"
+      twitter: "thecodechef"
+      facebook: "thecodechef"
+      google_plus: "thecodechef"
+      viewport: "width=device-width, initial-scale=1, shrink-to-fit=no"
     css:
       bootstrap: "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
       fontAwesome: "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"
       main: "./stylesheets/styles.css"
     js:
       jquery: "https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"
-      tether: "./javascripts/tether.min.js"
+      tether: "../components/tether/dist/js/tether.min.js"
       bootstrap: "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
       main: "./javascripts/scripts.js"
+    navigation:
+      links: [
+        {url:"/",caption: "Home", active: true},
+        {url:"/about",caption: "About"},
+        {url:"/contact",caption: "Contact"},
+        {url:"/downloads",caption: "Downloads"},
+        {url:"/tutorials",caption: "Tutorials"}
+      ]
 }
