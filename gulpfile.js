@@ -20,7 +20,6 @@ var gulp                       = require('gulp'),
 var TodoOpts = {
   fileName: "TODO.md",
   formats: [
-    ['//','\n'],
     ['<!--','-->'],
     ['/*','*/']
   ],
