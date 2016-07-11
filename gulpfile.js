@@ -2,6 +2,7 @@ var gulp                       = require('gulp'),
     path                       = require('path'),
     colors                     = require('colors'),
     sleep                      = require('sleep'),
+    mergeJson                  = require('gulp-merge-json'),
     runSequence                = require('run-sequence'),
     conventionalChangelog      = require('gulp-conventional-changelog'),
     conventionalGithubReleaser = require('conventional-github-releaser'),
@@ -11,8 +12,6 @@ var gulp                       = require('gulp'),
     _                          = require('lodash'),
     $                          = require('gulp-load-plugins')();
 
-
-var settings = "./_data/settings.json"
 
 gulp.task('bump', function(cb) {
   runSequence(
@@ -101,10 +100,19 @@ gulp.task('create-new-tag', function(cb) {
   }
 });
 
-gulp.task('build:data', function() {
-  return gulp.src('./_data/**/*.cson')
+gulp.task('cson', function(file) {
+  return gulp.src('./_data/cson/*.cson')
     .pipe($.cson())
     .pipe(gulp.dest('./_data'));
+});
+
+gulp.task('build:data',['cson'], function() {
+  return gulp.src('./_data/*.json')
+    .pipe(mergeJson('settings.json'))
+    .pipe(gulp.dest('./_data/'))
+    .on('end', function(){
+      return del(['./_data/*.json','!./_data/settings.json']);
+    });
 });
 
 gulp.task('build:scripts', function() {
@@ -127,15 +135,14 @@ gulp.task('build:styles',['clean:css'], function() {
 
 gulp.task('build:html',['clean:html'], function() {
   return gulp.src('./templates/index.pug')
-    .pipe($.data(function(file) {
-      var specific = require('./_data/' + path.basename(file.path) + '.json');
-      return _.merge(settings,specific);
+    .pipe($.data(function(){
+      return require('./_data/settings.json');
     }))
     .pipe($.pug({pretty: true}))
     .pipe(gulp.dest('./_site'));
 });
 
-gulp.task('build', function() {
+gulp.task('build', function(cb) {
   runSequence(
     'build:scripts',
     'build:styles',
@@ -160,7 +167,7 @@ gulp.task('release', function(cb) {
     // 'github-release',
     function (error) {
       if (error) {
-        console.log('[release]'.bold.magenta + ' There was an issue releasing themes:\n'.bold.red + error.message);
+        console.log('[release]'.bold.magenta + ' There was an issue releasing project:\n'.bold.red + error.message);
       } else {
         console.log('[release]'.bold.magenta + ' Finished successfully'.bold.green);
       }
@@ -169,9 +176,10 @@ gulp.task('release', function(cb) {
   );
 });
 
-gulp.task('default',['bump'], function() {
+gulp.task('default', function() {
   runSequence(
     'build',
+    'bump',
     'release'
   )
 });
