@@ -108,9 +108,11 @@ gulp.task('build:data', function() {
 });
 
 gulp.task('build:scripts', function() {
-  return gulp.src(['./babel/**/*.js'])
+  return gulp.src(['./babel/**/*.babel.js'])
     .pipe($.babel())
-    .pipe($.if(NODE.env = "production", $.uglify()))
+    .pipe($.concat('scripts.js'))
+    .pipe($.if(argv.production, $.uglify()))
+    .pipe($.if(argv.production, $.rename({extname: '.min.js'})))
     .pipe(gulp.dest('./_site/javascripts/'));
 });
 
@@ -118,8 +120,8 @@ gulp.task('build:styles',['clean:css'], function() {
   return gulp.src(['./sass/**/*.scss','!./sass/_**/*.scss','!./sass/_settings.scss'])
     .pipe($.sass())
     .pipe($.concat('styles.css'))
-    .pipe($.if(NODE.env = "production", $.csso()))
-    .pipe($.if(NODE.env = "production", $.rename({extname: '.min.css'})))
+    .pipe($.if(argv.production, $.csso()))
+    .pipe($.if(argv.production, $.rename({extname: '.min.css'})))
     .pipe(gulp.dest('./_site/stylesheets/'));
 });
 
