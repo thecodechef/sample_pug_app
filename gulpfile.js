@@ -69,6 +69,10 @@ gulp.task('clean:html', function(cb) {
   return del(['./_site/*.html']);
 });
 
+gulp.task('clean:todo', function(cb) {
+  return del(['./TODO.md']);
+});
+
 gulp.task('changelog', function () {
   return gulp.src('CHANGELOG.md')
     .pipe(conventionalChangelog({
@@ -77,7 +81,7 @@ gulp.task('changelog', function () {
     .pipe(gulp.dest('./'));
 });
 
-gulp.task('todo', function() {
+gulp.task('todo',['clean:todo'], function() {
   var cssTodos = gulp.src(['./_site/stylesheets/styles.{css,min.css}'])
                    .pipe($.notes(TodoOpts))
                    .pipe(gulp.dest('./'));
@@ -90,7 +94,7 @@ gulp.task('todo', function() {
   return merge(cssTodos,jsTodos,pugTodos);
 });
 
-gulp.task('generate:license', function() {
+gulp.task('license', function() {
   return gulp.src('LICENSE')
     .pipe($.license('MIT', {organization: "Simple Pug App",tiny: false}))
     .pipe(gulp.dest('./'))
@@ -183,12 +187,10 @@ gulp.task('build:html',['clean:html'], function() {
 
 gulp.task('build', function(cb) {
   runSequence(
-    'generate:license',
     'build:scripts',
     'build:styles',
     'build:data',
     'build:html',
-    'todo',
     function (error) {
       if (error) {
         console.log('[build]'.bold.magenta + ' There was an issue building:\n'.bold.red + error.message);
@@ -211,6 +213,8 @@ gulp.task('browserSync',['build'], function() {
 gulp.task('release', function(cb) {
   runSequence(
     'changelog',
+    'license',
+    'todo',
     'commit-changelog',
     // 'create-new-tag',
     // 'github-release',
