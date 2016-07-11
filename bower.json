@@ -1,6 +1,6 @@
 {
   "name": "sample_pug_app",
-  "version": "1.0.5",
+  "version": "1.0.2",
   "description": "A Simple Pug App Built with Bootstrap & Gulp",
   "keywords": [
     "Pug",
@@ -10,7 +10,7 @@
   "authors": [
     "Jeremy Bolding <cyberchefjay@gmail.com>"
   ],
-  "main": "",
+  "main": "gulpfile.js",
   "moduleType": [],
   "license": "MIT",
   "homepage": "",

@@ -12,6 +12,8 @@ var gulp                       = require('gulp'),
     $                          = require('gulp-load-plugins')();
 
 
+var settings = "./_data/settings.json"
+
 gulp.task('bump', function(cb) {
   runSequence(
     'bump-version',
@@ -99,19 +101,53 @@ gulp.task('create-new-tag', function(cb) {
   }
 });
 
-gulp.task('cson', function() {
-    return gulp.src('./_data/**/*.cson')
-      .pipe($.cson())
-      .pipe($.concat('settings.json'))
-      .pipe(gulp.dest('./_data'));
+gulp.task('build:data', function() {
+  return gulp.src('./_data/**/*.cson')
+    .pipe($.cson())
+    .pipe(gulp.dest('./_data'));
 });
-gulp.task('build:html', function() {
+
+gulp.task('build:scripts', function() {
+  return gulp.src(['./babel/**/*.js'])
+    .pipe($.babel())
+    .pipe($.if(NODE.env = "production", $.uglify()))
+    .pipe(gulp.dest('./_site/javascripts/'));
+});
+
+gulp.task('build:styles',['clean:css'], function() {
+  return gulp.src(['./sass/**/*.scss','!./sass/_**/*.scss','!./sass/_settings.scss'])
+    .pipe($.sass())
+    .pipe($.concat('styles.css'))
+    .pipe($.if(NODE.env = "production", $.csso()))
+    .pipe($.if(NODE.env = "production", $.rename({extname: '.min.css'})))
+    .pipe(gulp.dest('./_site/stylesheets/'));
+});
+
+gulp.task('build:html',['clean:html'], function() {
   return gulp.src('./templates/index.pug')
     .pipe($.data(function(file) {
-      return require('./_data/settings.json');
+      var specific = require('./_data/' + path.basename(file.path));
+      return _.merge(settings,specific);
     }))
     .pipe($.pug({pretty: true}))
     .pipe(gulp.dest('./_site'));
+});
+
+gulp.task('build', function() {
+  runSequence(
+    'build:scripts',
+    'build:styles',
+    'build:data',
+    'build:html',
+    function (error) {
+      if (error) {
+        console.log('[build]'.bold.magenta + ' There was an issue building:\n'.bold.red + error.message);
+      } else {
+        console.log('[build]'.bold.magenta + ' Finished successfully'.bold.green);
+      }
+      cb(error);
+    }
+  );
 });
 
 gulp.task('release', function(cb) {
@@ -133,8 +169,7 @@ gulp.task('release', function(cb) {
 
 gulp.task('default',['bump'], function() {
   runSequence(
-    'cson',
-    'build:html',
+    'build',
     'release'
   )
 });
