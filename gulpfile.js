@@ -111,10 +111,9 @@ gulp.task('build:scripts',['clean:js'], function() {
   return gulp.src(['./babel/**/*.babel.js'])
     .pipe($.babel())
     .pipe($.concat('scripts.js'))
-    .pipe($.license('MIT', {organization: "Simple Pug App",tiny: false}))
     .pipe($.if(argv.production, $.uglify()))
     .pipe($.if(argv.production, $.rename({extname: '.min.js'})))
-    .pipe($.if(argv.production, $.license('MIT', {organization: "Simple Pug App",tiny: true})))
+    .pipe($.if(argv.production, $.license('MIT', {organization: "Simple Pug App",tiny: true}),$.license('MIT', {organization: "Simple Pug App",tiny: false})))
     .pipe(gulp.dest('./_site/javascripts/'));
 });
 
