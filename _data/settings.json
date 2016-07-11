@@ -58,7 +58,7 @@
 		},
 		"js": {
 			"jquery": "https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js",
-			"tether": "../components/tether/dist/js/tether.min.js",
+			"tether": "../components/tether/dist/js/tether.js",
 			"bootstrap": "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js",
 			"main": "./javascripts/scripts.js"
 		},

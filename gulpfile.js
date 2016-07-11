@@ -123,6 +123,10 @@ gulp.task('build:html',['clean:html'], function() {
       return require('./_data/settings.json');
     }))
     .pipe($.pug({pretty: true}))
+    .pipe(gulp.dest('./_site'))
+    .pipe($.if(argv.production, $.replace("./stylesheets/styles.css","./stylesheets/styles.min.css")))
+    .pipe($.if(argv.production, $.replace("./javascripts/scripts.js","./javascripts/scripts.min.js")))
+    .pipe($.if(argv.production, $.replace("../components/tether/dist/js/tether.js","../components/tether/dist/js/tether.min.js")))
     .pipe(gulp.dest('./_site'));
 });
 
