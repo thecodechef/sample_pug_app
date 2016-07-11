@@ -142,7 +142,7 @@ gulp.task('build:html',['clean:html'], function() {
     .pipe(gulp.dest('./_site'));
 });
 
-gulp.task('build', function(cb) {
+gulp.task('build',['clean'], function(cb) {
   runSequence(
     'build:scripts',
     'build:styles',
