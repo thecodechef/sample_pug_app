@@ -57,6 +57,12 @@ gulp.task('changelog', function () {
     .pipe(gulp.dest('./'));
 });
 
+gulp.task('generate:license', function() {
+  return gulp.src('LICENSE')
+    .pipe($.license('MIT', {organization: "Simple Pug App",tiny: false}))
+    .pipe(gulp.dest('./'))
+});
+
 gulp.task('commit-version', function() {
   return gulp.src('.')
     .pipe($.git.add())
@@ -103,7 +109,7 @@ gulp.task('build:scripts',['clean:js'], function() {
   return gulp.src(['./babel/**/*.babel.js'])
     .pipe($.babel())
     .pipe($.concat('scripts.js'))
-    .pipe($.license('MIT', {tiny: false}))
+    .pipe($.license('MIT', {organization: "Simple Pug App",tiny: false}))
     .pipe($.if(argv.production, $.uglify()))
     .pipe($.if(argv.production, $.rename({extname: '.min.js'})))
     .pipe(gulp.dest('./_site/javascripts/'));
@@ -113,7 +119,7 @@ gulp.task('build:styles',['clean:css'], function() {
   return gulp.src(['./sass/**/*.scss','!./sass/_**/*.scss','!./sass/_settings.scss'])
     .pipe($.sass())
     .pipe($.concat('styles.css'))
-    .pipe($.license('MIT', {tiny: false}))
+    .pipe($.license('MIT', {organization: "Simple Pug App",tiny: false}))
     .pipe($.if(argv.production, $.csso()))
     .pipe($.if(argv.production, $.rename({extname: '.min.css'})))
     .pipe(gulp.dest('./_site/stylesheets/'));
@@ -134,6 +140,7 @@ gulp.task('build:html',['clean:html'], function() {
 
 gulp.task('build', function(cb) {
   runSequence(
+    'generate:license',
     'build:scripts',
     'build:styles',
     'build:data',

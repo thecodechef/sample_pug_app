@@ -1,6 +1,6 @@
 {
   "name": "sample_pug_app",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "A Simple Pug App Built With Bootstrap & Gulp",
   "main": "gulpfile.js",
   "keywords": [
@@ -53,6 +53,7 @@
     "gulp-watch": "^4.3.8",
     "lodash": "^4.13.1",
     "path": "^0.12.7",
+    "pump": "^1.0.1",
     "run-sequence": "^1.2.2",
     "sleep": "^3.0.1",
     "yargs": "^4.8.0"
