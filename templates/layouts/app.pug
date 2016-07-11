@@ -7,13 +7,14 @@ head
   meta(name="keywords" content=meta.keywords)
   meta(name="description" content=meta.description)
   meta(http-equiv="x-ua-compatible" content="ie=edge")
+  meta(http-equiv="default-style" content="Bootstrap-4")
   meta(name="viewport" content=meta.viewport)
   block title
     +full-title(site.title)
   block styles
-    link(rel="stylesheet" href=styles.bootstrap)
-    link(rel="stylesheet" href=styles.fontAwesome)
-    link(rel="stylesheet" href=styles.main)
+    link(title="Bootstrap-4" rel="stylesheet" href=styles.bootstrap)
+    link(title="FontAwesome-4.6.3" rel="stylesheet" href=styles.fontAwesome)
+    link(title="MainStyles" rel="stylesheet" href=styles.main)
 body
   block navigation
     include ../partials/navbar.pug
