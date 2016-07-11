@@ -95,7 +95,9 @@ gulp.task('cson', function(file) {
     .pipe($.cson())
     .pipe(gulp.dest('./_data'));
 });
+/*
 
+*/
 gulp.task('build:data',['cson'], function() {
   return gulp.src('./_data/*.json')
     .pipe(mergeJson('settings.json'))
@@ -112,6 +114,7 @@ gulp.task('build:scripts',['clean:js'], function() {
     .pipe($.license('MIT', {organization: "Simple Pug App",tiny: false}))
     .pipe($.if(argv.production, $.uglify()))
     .pipe($.if(argv.production, $.rename({extname: '.min.js'})))
+    .pipe($.if(argv.production, $.license('MIT', {organization: "Simple Pug App",tiny: true})))
     .pipe(gulp.dest('./_site/javascripts/'));
 });
 
