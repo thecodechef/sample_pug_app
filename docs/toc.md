@@ -1,0 +1,10 @@
+# Table of Contents
+ + [Install](#install)
+  + [Cloning](#cloning)
+  + [Dependencies](#dependencies)
+ + [Usage](#usage)
+ + [Contributing](#contributing)
+  + [Tests](#tests)
+  + [Bug Reports](#bug-reports)
+ + [Author](#author)
+ + [License](#license)

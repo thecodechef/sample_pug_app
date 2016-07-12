@@ -1,6 +1,6 @@
 {
   "name": "sample_pug_app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Simple Pug App Built with Bootstrap & Gulp",
   "keywords": [
     "Pug",
@@ -22,5 +22,9 @@
     "components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "bootstrap": "4.0.0-alpha.2",
+    "tether": "~1.3.2"
+  }
 }

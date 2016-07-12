@@ -19,64 +19,57 @@ module.exports = function(gulp, $) {
       .pipe(conventionalChangelog({
         preset: "angular"
       }))
+      .pipe($.size())
+      .pipe($.duration())
       .pipe(gulp.dest('./'));
   });
   
-  // gulp.task('generate:todo', function() {
-  //   return gulp.src('./_site/**/*.*')
-  //     .pipe($.notes({
-  //       fileName: 'TODO.md',
-  //       formats:[
-  //         ['/*','*/'],
-  //         ['//','\n'],
-  //         ['<!--','-->']
-  //       ],
-  //       teamplates: {
-  //         header: '# TODO',
-  //         label: '## <%= label %>',
-  //         note: '* <%= note %> - <%= fileName %> | <%= lineNumber %>\n',
-  //         empty: '\nNo more TODO\'s or FIXME\'s need to be done.',
-  //         footer: 'Generated: **<%= dateCreated %>**'
-  //       }
-  //     }))
-  //     .pipe(gulp.dest('./'))
-  // });
+  gulp.task('generate:todo', function() {
+    return gulp.src(['./_site/**/*'])
+      .pipe($.todo({
+        fileName: 'TODO.md'
+      }))
+      .pipe($.size())
+      .pipe($.duration())
+      .pipe(gulp.dest('./'));
+  });
   
   gulp.task('generate:license', function() {
-    if (fs.readFileSync('./LICENSE')) {
-      console.log('[License Already Exists]'.bold.blue);
-    } else {
-      return fs.writeFileSync('./LICENSE',$.license('MIT',{tiny: false, organization: 'Simple Pug App'}));
-    }
+    return fs.writeFileSync('./LICENSE',$.license('MIT',{tiny: false, organization: 'Simple Pug App'}));
   });
   
   gulp.task('generate:readme', function() {
-      // content
+    return gulp.src(['./.verbrc.md'])
+      .pipe($.verb({dest: 'README.md'}))
+      .pipe($.size())
+      .pipe(gulp.dest('./'))
+      .on('end', function() {
+        return gulp.src('./README.md')
+          .pipe($.alex())
+          .pipe($.alex.reporter())
+          .pipe($.duration())
+          .pipe(gulp.dest('./'));
+      });
   });
   
   gulp.task('generate:gitignore', function() {
-    if (fs.readFileSync('./.gitignore')) {
-      console.log('[GitIgnore Already Exists]'.bold.blue);
-    } else {
-      return fs.writeFileSync('./.gitignore','./_site\n./node_modules\n./components\n./bower_components\n');
-    }
+    return fs.writeFileSync('./.gitignore','./_site\n./node_modules\n./components\n./bower_components\n');
   });
   
-  gulp.task('bump-version', function() {
+  gulp.task('bump', function() {
     return gulp.src(['./package.json','./bower.json'])
       .pipe($.if((Object.keys(argv).length === 2), $.bump()))
-      .pipe($.if(argv.pre,   $.bump({ type: 'prerelease'})))
       .pipe($.if(argv.patch, $.bump()))
       .pipe($.if(argv.minor, $.bump({ type: 'minor' })))
       .pipe($.if(argv.major, $.bump({ type: 'major' })))
+      .pipe($.duration())
       .pipe(gulp.dest('./'));
   });
   
   gulp.task('commit-changes', function() {
-    var commitMessage = argv.message || "chore: update README.md";
     return gulp.src('.')
       .pipe($.git.add())
-      .pipe($.git.commit(commitMessage));
+      .pipe($.git.commit('commit: Project Updated'));
   });
   
   gulp.task('create-new-tag', function() {
@@ -105,17 +98,19 @@ module.exports = function(gulp, $) {
   
   gulp.task('originRemote', function(cb) {
     var baseHtml = "http://www.github.com/";
-    $.git.addRemote('origin', baseHtml + argv.gituser + '/' + argv.gitrepo ,cb);
+    var gitUser = "thecodechef";
+    var gitRepo = "sample_pug_app";
+    $.git.addRemote('origin', baseHtml + gitUser + '/' + gitRepo + '.git' ,cb);
   });
   
   gulp.task('release',function(){
     runSequence(
       'generate:gitignore',
-      // 'generate:readme',
+      'generate:readme',
       'generate:changelog',
       'generate:license',
-      // 'generate:todo',
-      'bump-version',
+      'generate:todo',
+      'bump',
       'commit-changes',
       'create-new-tag',
       'github-release',
