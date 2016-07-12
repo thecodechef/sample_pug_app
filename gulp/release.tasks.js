@@ -19,8 +19,6 @@ module.exports = function(gulp, $) {
       .pipe(conventionalChangelog({
         preset: "angular"
       }))
-      .pipe($.size())
-      .pipe($.duration())
       .pipe(gulp.dest('./'));
   });
   
@@ -31,11 +29,10 @@ module.exports = function(gulp, $) {
       }))
       .pipe($.size())
       .pipe($.duration())
-      .pipe(gulp.dest('./'));
-  });
-  
-  gulp.task('generate:license', function() {
-    return fs.writeFileSync('./LICENSE',$.license('MIT',{tiny: false, organization: 'Simple Pug App'}));
+      .pipe(gulp.dest('./'))
+      .on('end', function() {
+        return del(['./javascripts','./stylesheets']);
+      });
   });
   
   gulp.task('generate:readme', function() {
@@ -52,24 +49,21 @@ module.exports = function(gulp, $) {
       });
   });
   
-  gulp.task('generate:gitignore', function() {
-    return fs.writeFileSync('./.gitignore','./_site\n./node_modules\n./components\n./bower_components\n');
-  });
-  
   gulp.task('bump', function() {
     return gulp.src(['./package.json','./bower.json'])
       .pipe($.if((Object.keys(argv).length === 2), $.bump()))
       .pipe($.if(argv.patch, $.bump()))
       .pipe($.if(argv.minor, $.bump({ type: 'minor' })))
       .pipe($.if(argv.major, $.bump({ type: 'major' })))
-      .pipe($.duration())
       .pipe(gulp.dest('./'));
   });
   
-  gulp.task('commit-changes', function() {
+  gulp.task('commit-changes', function(cb) {
     return gulp.src('.')
+      .pipe($.gitignore())
       .pipe($.git.add())
-      .pipe($.git.commit('commit: Project Updated'));
+      .pipe($.git.commit('commit: Project Updated'))
+      .pipe($.git.push("origin","master",cb));
   });
   
   gulp.task('create-new-tag', function() {
@@ -105,10 +99,8 @@ module.exports = function(gulp, $) {
   
   gulp.task('release',function(){
     runSequence(
-      'generate:gitignore',
       'generate:readme',
       'generate:changelog',
-      'generate:license',
       'generate:todo',
       'bump',
       'commit-changes',
