@@ -1,6 +1,6 @@
 {
   "name": "sample_pug_app",
-  "version": "1.0.8",
+  "version": "1.0.0",
   "description": "A Simple Pug App Built with Bootstrap & Gulp",
   "keywords": [
     "Pug",
