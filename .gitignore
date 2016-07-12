@@ -1,4 +1,4 @@
-./_site
-./node_modules
-./components
-./bower_components
+_site/
+node_modules/
+components/
+bower_components/
