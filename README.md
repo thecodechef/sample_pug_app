@@ -1,4 +1,4 @@
-#  Sample Pug App [![NPM version](https://badge.fury.io/js/sample_pug_app.svg)](http://badge.fury.io/js/sample_pug_app)
+#  Sample Pug App [![NPM version](https://badge.fury.io/js/sample_pug_app.svg)](http://badge.fury.io/js/sample_pug_app) [![Greenkeeper badge](https://badges.greenkeeper.io/thecodechef/sample_pug_app.svg)](https://greenkeeper.io/)
 
 > A Simple Pug App Built With Bootstrap & Gulp
 
